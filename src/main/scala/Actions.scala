@@ -12,7 +12,7 @@ object Actions {
     if (machine.locked) doNothing else takeCandy andThen lockMachine
   }
 
-  private val actions: Map[Input, Transformation] = Map(
+  private val actions: Map[Input, Action] = Map(
     Coin -> coinAction,
     Turn -> turnAction
   )
@@ -21,7 +21,7 @@ object Actions {
     actions(input)
   }
 
-  private implicit def transitionPickerToMachineTransition(machineMachineTransition: Action): Transformation = {
-    machine => machineMachineTransition(machine)(machine)
+  private implicit def actionToTransformation(action: Action): Transformation = {
+    machine => action(machine)(machine)
   }
 }
