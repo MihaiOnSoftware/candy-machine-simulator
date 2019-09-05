@@ -6,10 +6,10 @@ object Actions {
   type Action = Machine => Transformation
 
   private val coinAction: Action = machine => {
-    if (machine.locked) unlockMachine andThen addCoin else addCoin
+    if (machine.locked && machine.candies > 0) unlockMachine andThen addCoin else doNothing
   }
   private val turnAction: Action = machine => {
-    if (machine.locked) doNothing else takeCandy andThen lockMachine
+    if (machine.locked || machine.candies <= 0) doNothing else takeCandy andThen lockMachine
   }
 
   private val actions: Map[Input, Action] = Map(
